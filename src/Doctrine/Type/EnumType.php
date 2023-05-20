@@ -13,23 +13,23 @@ abstract class EnumType extends Type {
   protected $enum;
   
   public function getSQLDeclaration(array $column, AbstractPlatform $platform){
-    $values = implode("', '", array_map(function($val) {return $val->value;}, Status::cases()));
+    $values = implode("', '", array_map(function($val) { return $val->value; }, Status::cases()));
     return "ENUM('$values')";
   }
   
   public function convertToPHPValue($value, AbstractPlatform $platform){
-    return $value;
+    return Status::tryFrom($value);
   }
   
   public function convertToDatabaseValue($value, AbstractPlatform $platform){
-    if(Status::tryFrom($value) === null){
-      throw new InvalidArgumentException("Invalid value '$this->name'.");
+    if($value === null){
+      throw new InvalidArgumentException("Invalid value in enum '$this->name' given '$value'.");
     }
     
-    return $value;
+    return $value->value;
   }
   
-  public function getName(){    
+  public function getName(){
     return $this->name;
   }
   
