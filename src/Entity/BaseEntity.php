@@ -16,13 +16,13 @@ abstract class BaseEntity {
   #[ORM\Column(type: UlidType::NAME, unique: true)]
   protected ?Ulid $id = null;
   
-  #[ORM\Column(name: "created_at")]
+  #[ORM\Column]
   protected DateTime $createdAt; 
   
-  #[ORM\Column(name: "updated_at")]
+  #[ORM\Column]
   protected DateTime $updatedAt; 
   
-  #[ORM\Column(name: "deleted_at")]
+  #[ORM\Column]
   protected ?DateTime $deletedAt;
   
   #[ORM\PrePersist]

@@ -13,13 +13,13 @@ abstract class MeasurementEntity {
   #[ORM\Column]
   protected ?int $id = null;
   
-  #[ORM\Column(name: "created_at")]
+  #[ORM\Column]
   protected DateTime $createdAt; 
   
-  #[ORM\Column(name: "updated_at")]
+  #[ORM\Column]
   protected DateTime $updatedAt; 
   
-  #[ORM\Column(name: "deleted_at")]
+  #[ORM\Column]
   protected ?DateTime $deletedAt;
   
   #[ORM\PrePersist]
