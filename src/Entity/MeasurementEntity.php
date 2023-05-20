@@ -13,13 +13,13 @@ abstract class MeasurementEntity {
   #[ORM\Column]
   protected ?int $id = null;
   
-  #[ORM\Column]
+  #[ORM\Column(name: "created_at")]
   protected DateTime $createdAt; 
   
-  #[ORM\Column]
+  #[ORM\Column(name: "updated_at")]
   protected DateTime $updatedAt; 
   
-  #[ORM\Column]
+  #[ORM\Column(name: "deleted_at")]
   protected ?DateTime $deletedAt;
   
   #[ORM\PrePersist]
@@ -29,6 +29,10 @@ abstract class MeasurementEntity {
       $this->createdAt = new DateTime();
     }
     $this->updatedAt = new DateTime();
+  }
+  
+  public function setDeletedAt(DateTime $deletedAt): void {
+    $this->deletedAt = $deletedAt;
   }
   
 }
