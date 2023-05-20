@@ -7,9 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Uid\Ulid;
 
-class BaseRepository extends ServiceEntityRepository {
+class MeasurementRepository extends ServiceEntityRepository {
   
   protected $entityName;
     
@@ -44,8 +43,8 @@ class BaseRepository extends ServiceEntityRepository {
       ];
   }
   
-  public function getById(Ulid $id){
-      return parent::find($id->toBinary());
+  public function getById(int $id){
+      return parent::find($id);
   }
   
   public function save($entity, bool $flush = false): void {
@@ -57,15 +56,11 @@ class BaseRepository extends ServiceEntityRepository {
   }
   
   public function remove($entity, bool $flush = false, bool $soft = true): void {
-    if($soft){
-      $entity->softDelete();
-    } else {
-      $this->getEntityManager()->remove($entity);
-    }
-
-    if($flush){
-        $this->getEntityManager()->flush();
-    }
+      if($soft){
+        $entity->softDelete();
+      } else {
+        $this->getEntityManager()->remove($entity);
+      }
 
       if($flush){
           $this->getEntityManager()->flush();
