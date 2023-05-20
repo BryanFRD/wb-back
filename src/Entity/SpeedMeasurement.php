@@ -18,12 +18,18 @@ class SpeedMeasurement extends MeasurementEntity {
     return $this->speed;
   }
   
+  public function setSpeed(float $speed): self {
+    $this->speed = $speed;
+    return $this;
+  }
+  
   public function getModule(): Module {
     return $this->module;
   }
   
-  public function setSpeed(float $speed): void {
-    $this->speed = $speed;
+  public function setModule(Module $module): self {
+    $this->module = $module;
+    return $this;
   }
   
 }

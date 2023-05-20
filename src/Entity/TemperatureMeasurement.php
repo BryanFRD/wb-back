@@ -18,12 +18,18 @@ class TemperatureMeasurement extends MeasurementEntity {
     return $this->temperature;
   }
   
+  public function setTemperature(float $temperature): self {
+    $this->temperature = $temperature;
+    return $this;
+  }
+  
   public function getModule(): Module {
     return $this->module;
   }
   
-  public function setTemperature(float $temperature): void {
-    $this->temperature = $temperature;
+  public function setModule(Module $module): self {
+    $this->module = $module;
+    return $this;
   }
   
 }

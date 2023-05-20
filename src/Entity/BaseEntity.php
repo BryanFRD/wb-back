@@ -23,7 +23,7 @@ abstract class BaseEntity {
   protected DateTime $updatedAt; 
   
   #[ORM\Column]
-  protected ?DateTime $deletedAt;
+  protected ?DateTime $deletedAt = null;
   
   #[ORM\PrePersist]
   #[ORM\PreUpdate]
@@ -36,6 +36,22 @@ abstract class BaseEntity {
   
   public function softDelete(): void {
     $this->deletedAt = new DateTime();
+  }
+  
+  public function getId(): ?Ulid {
+    return $this->id;
+  }
+  
+  public function getCreatedAt(): DateTime {
+    return $this->createdAt;
+  }
+  
+  public function getUpdatedAt(): DateTime {
+    return $this->updatedAt;
+  }
+  
+  public function getDeletedAt(): ?DateTime {
+    return $this->deletedAt;
   }
   
 }

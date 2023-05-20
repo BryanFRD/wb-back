@@ -22,6 +22,11 @@ class Module extends BaseEntity {
     return $this->name;
   }
   
+  public function setName(string $name): self {
+    $this->name = $name;
+    return $this;
+  }
+  
   public function getSpeedMeasurements(): ?Collection {
     return $this->speedMeasurements;
   }

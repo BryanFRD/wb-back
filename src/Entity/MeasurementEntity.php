@@ -20,7 +20,7 @@ abstract class MeasurementEntity {
   protected DateTime $updatedAt; 
   
   #[ORM\Column]
-  protected ?DateTime $deletedAt;
+  protected ?DateTime $deletedAt = null;
   
   #[ORM\PrePersist]
   #[ORM\PreUpdate]
@@ -33,6 +33,22 @@ abstract class MeasurementEntity {
   
   public function softDelete(): void {
     $this->deletedAt = new DateTime();
+  }
+  
+  public function getId(): ?int {
+    return $this->id;
+  }
+  
+  public function getCreatedAt(): DateTime {
+    return $this->createdAt;
+  }
+  
+  public function getUpdatedAt(): DateTime {
+    return $this->updatedAt;
+  }
+  
+  public function getDeletedAt(): ?DateTime {
+    return $this->deletedAt;
   }
   
 }
