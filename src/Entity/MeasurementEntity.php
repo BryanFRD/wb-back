@@ -31,8 +31,8 @@ abstract class MeasurementEntity {
     $this->updatedAt = new DateTime();
   }
   
-  public function setDeletedAt(DateTime $deletedAt): void {
-    $this->deletedAt = $deletedAt;
+  public function softDelete(): void {
+    $this->deletedAt = new DateTime();
   }
   
 }
