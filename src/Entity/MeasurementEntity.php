@@ -19,15 +19,22 @@ abstract class MeasurementEntity {
   #[ORM\Column]
   protected DateTime $updatedAt; 
   
-  #[ORM\Column]
+  #[ORM\Column(nullable: true)]
   protected ?DateTime $deletedAt = null;
   
   #[ORM\PrePersist]
   #[ORM\PreUpdate]
   public function updateTimestamps(): void {
-    if($this->createdAt === null){
+    if(empty($this->createdAt)){
       $this->createdAt = new DateTime();
     }
+    
+    $this->updatedAt = new DateTime();
+  }
+
+  #[ORM\PrePersist]
+  #[ORM\PreUpdate]
+  public function setUpdatedAtValue(): void {
     $this->updatedAt = new DateTime();
   }
   

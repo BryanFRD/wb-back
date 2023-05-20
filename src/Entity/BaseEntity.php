@@ -22,15 +22,16 @@ abstract class BaseEntity {
   #[ORM\Column]
   protected DateTime $updatedAt; 
   
-  #[ORM\Column]
+  #[ORM\Column(nullable: true)]
   protected ?DateTime $deletedAt = null;
   
   #[ORM\PrePersist]
   #[ORM\PreUpdate]
   public function updateTimestamps(): void {
-    if($this->createdAt === null){
+    if(empty($this->createdAt)){
       $this->createdAt = new DateTime();
     }
+    
     $this->updatedAt = new DateTime();
   }
   
