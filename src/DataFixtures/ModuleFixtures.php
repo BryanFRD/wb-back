@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Module;
+use App\Entity\Sensor;
 use App\Enum\Status;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -17,9 +18,23 @@ class ModuleFixtures extends Fixture
     for($i = 0; $i < 10; $i++){
       $module = new Module();
       $module
-          ->setName("Module - " . $faker->unique()->word())
+        ->setName("Module - " . $faker->unique()->word())
+        ->setStatus($faker->randomElement(Status::cases()))
+        ->updateTimestamps();
+      
+      for($j = 0; $j < 5; $j++){
+        $sensor = new Sensor();
+        $sensor
+          ->setName("Sensor #$j - " . $module->getId())
           ->setStatus($faker->randomElement(Status::cases()))
+          ->setMeasurementType($faker->randomElement(["Vitesse", "Temperature", "Energie"]))
+          ->setSimulationMinimum($faker->randomDigit())
+          ->setSimulationMaximum($faker->randomNumber(2))
+          ->setModule($module)
           ->updateTimestamps();
+        
+        $manager->persist($sensor);
+      }
           
       $manager->persist($module);
     }
