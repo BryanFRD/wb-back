@@ -17,6 +17,9 @@ class Sensor extends BaseEntity {
   protected Status $status = Status::INACTIVE;
   
   #[ORM\Column]
+  protected string $measurementType;
+  
+  #[ORM\Column]
   protected bool $simulated = true;
   
   #[ORM\Column]
@@ -46,6 +49,15 @@ class Sensor extends BaseEntity {
   
   public function setStatus(Status $status): self {
     $this->status = $status;
+    return $this;
+  }
+  
+  public function getMeasurementType(): string {
+    return $this->measurementType;
+  }
+  
+  public function setMeasurementType(string $measurementType): self {
+    $this->measurementType = $measurementType;
     return $this;
   }
   
