@@ -49,6 +49,33 @@ class Sensor extends BaseEntity {
     return $this;
   }
   
+  public function isSimulated(): bool {
+    return $this->simulated;
+  }
+  
+  public function setSimulated(bool $simulated): self {
+    $this->simulated = $simulated;
+    return $this;
+  }
+  
+  public function getSimulationMinimum(): float {
+    return $this->simulationMinimum;
+  }
+  
+  public function setSimulationMinimum(float $simulationMinimum): self {
+    $this->simulationMinimum = $simulationMinimum;
+    return $this;
+  }
+  
+  public function getSimulationMaximum(): float {
+    return $this->simulationMaximum;
+  }
+  
+  public function setSimulationMaximum(float $simulationMaximum): self {
+    $this->simulationMaximum = $simulationMaximum;
+    return $this;
+  }
+  
   public function getModule(): Module {
     return $this->module;
   }
