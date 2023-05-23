@@ -16,6 +16,15 @@ class Sensor extends BaseEntity {
   #[ORM\Column(type: "status_enum")]
   protected Status $status = Status::INACTIVE;
   
+  #[ORM\Column]
+  protected bool $simulated = true;
+  
+  #[ORM\Column]
+  protected float $simulationMinimum = 0;
+  
+  #[ORM\Column]
+  protected float $simulationMaximum = 100;
+  
   #[ORM\ManyToOne(targetEntity: Module::class, inversedBy: "sensor")]
   protected ?Module $module;
   
