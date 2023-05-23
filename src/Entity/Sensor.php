@@ -7,8 +7,8 @@ use App\Repository\ModuleRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ModuleRepository::class)]
-class Module extends BaseEntity {
+#[ORM\Entity(repositoryClass: SensorRepository::class)]
+class Sensor extends BaseEntity {
   
   #[ORM\Column(length: 255)]
   protected string $name;
@@ -16,8 +16,11 @@ class Module extends BaseEntity {
   #[ORM\Column(type: "status_enum")]
   protected Status $status = Status::INACTIVE;
   
-  #[ORM\OneToMany(targetEntity: Sensor::class, mappedBy: "sensor")]
-  protected ?Collection $sensors;
+  #[ORM\ManyToOne(targetEntity: Module::class, inversedBy: "sensor")]
+  protected ?Module $module;
+  
+  #[ORM\OneToMany(targetEntity: Measurement::class, mappedBy: "measurement")]
+  protected ?Collection $measurements;
   
   public function getName(): string {
     return $this->name;
@@ -37,8 +40,17 @@ class Module extends BaseEntity {
     return $this;
   }
   
-  public function getSensors(): ?Collection {
-    return $this->sensors;
+  public function getModule(): Module {
+    return $this->module;
+  }
+  
+  public function setModule(Module $module): self {
+    $this->module = $module;
+    return $this;
+  }
+  
+  public function getMeasurements(): ?Collection {
+    return $this->measurements;
   }
   
 }
