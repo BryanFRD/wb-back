@@ -8,7 +8,9 @@ use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
 
-abstract class BaseEntity {
+abstract class AbstractEntity {
+  
+  //TODO Validate values
   
   #[ORM\Id]
   #[ORM\GeneratedValue("CUSTOM")]
@@ -16,11 +18,11 @@ abstract class BaseEntity {
   #[ORM\Column(type: UlidType::NAME, unique: true)]
   protected ?Ulid $id = null;
   
-  #[ORM\Column]
-  protected DateTime $createdAt; 
+  #[ORM\Column(updatable: false)]
+  protected DateTime $createdAt;
   
   #[ORM\Column]
-  protected DateTime $updatedAt; 
+  protected DateTime $updatedAt;
   
   #[ORM\Column(nullable: true)]
   protected ?DateTime $deletedAt = null;

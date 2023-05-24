@@ -5,7 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MeasurementRepository::class)]
-class Measurement extends BaseEntity {
+class Measurement extends AbstractEntity {
+  
+  //TODO Validate values
   
   #[ORM\Column]
   protected float $measure;

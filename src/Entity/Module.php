@@ -8,7 +8,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ModuleRepository::class)]
-class Module extends BaseEntity {
+class Module extends AbstractEntity {
+  
+  //TODO Validate values
   
   #[ORM\Column(length: 255)]
   protected string $name;

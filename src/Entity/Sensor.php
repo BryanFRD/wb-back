@@ -8,7 +8,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SensorRepository::class)]
-class Sensor extends BaseEntity {
+class Sensor extends AbstractEntity {
+  
+  //TODO Validate values
   
   #[ORM\Column(length: 255)]
   protected string $name;
@@ -88,11 +90,11 @@ class Sensor extends BaseEntity {
     return $this;
   }
   
-  public function getModule(): Module {
+  public function getModule(): ?Module {
     return $this->module;
   }
   
-  public function setModule(Module $module): self {
+  public function setModule(?Module $module): self {
     $this->module = $module;
     return $this;
   }
