@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Uid\Ulid;
 
-#[Route(path: "/modules")]
 class ModuleController extends AbstractController {
   
   protected ModuleService $service;
@@ -18,7 +17,7 @@ class ModuleController extends AbstractController {
   }
   
   #[Route(
-    path: "",
+    path: "modules",
     name: "get_all_module",
     methods: ["GET"]
   )]
@@ -29,7 +28,19 @@ class ModuleController extends AbstractController {
   }
   
   #[Route(
-    path: "",
+    path: "modules/{id}",
+    name: "get_module_by_id",
+    requirements: ["id" => "[0-7][0-9A-HJKMNP-TV-Z]{25}"],
+    methods: ["GET"]
+  )]
+  public function getModuleById(Ulid $id): JsonResponse {
+    $module = $this->service->getAll(["id" => $id]);
+    
+    return new JsonResponse($module);
+  }
+  
+  #[Route(
+    path: "modules",
     name: "create_module",
     methods: ["POST"]
   )]
@@ -40,7 +51,7 @@ class ModuleController extends AbstractController {
   }
   
   #[Route(
-    path: "/{id}",
+    path: "modules/{id}",
     name: "update_module",
     requirements: ["id" => "[0-7][0-9A-HJKMNP-TV-Z]{25}"],
     methods: ["PUT"]
@@ -52,7 +63,7 @@ class ModuleController extends AbstractController {
   }
   
   #[Route(
-    path: "/{id}",
+    path: "modules/{id}",
     name: "delete_module",
     requirements: ["id" => "[0-7][0-9A-HJKMNP-TV-Z]{25}"],
     methods: ["DELETE"]

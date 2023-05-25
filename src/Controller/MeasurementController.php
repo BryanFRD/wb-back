@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Uid\Ulid;
 
-#[Route(path: "/measurements")]
 class MeasurementController extends AbstractController {
   
   protected MeasurementService $service;
@@ -18,18 +17,42 @@ class MeasurementController extends AbstractController {
   }
   
   #[Route(
-    path: "",
+    path: "measurements",
     name: "get_all_measurement",
     methods: ["GET"]
   )]
   public function getAllMeasurement(Request $request): JsonResponse {
-    $measurement = $this->service->getAll($this->getDatasFromRequest($request)["params"]);
+    $measurements = $this->service->getAll($this->getDatasFromRequest($request)["params"]);
+    
+    return new JsonResponse($measurements);
+  }
+  
+  #[Route(
+    path: "measurements/{id}",
+    name: "get_measurement_by_id",
+    requirements: ["id" => "[0-7][0-9A-HJKMNP-TV-Z]{25}"],
+    methods: ["GET"]
+  )]
+  public function getMeasurementById(Ulid $id): JsonResponse {
+    $measurement = $this->service->getAll(["id" => $id]);
     
     return new JsonResponse($measurement);
   }
   
   #[Route(
-    path: "",
+    path: "sensor/{sensorId}/measurements",
+    name: "get_sensor_measurements",
+    requirements: ["sensorId" => "[0-7][0-9A-HJKMNP-TV-Z]{25}"],
+    methods: ["GET"]
+  )]
+  public function getSensorMeasurements(Ulid $sensorId): JsonResponse {
+    $measurements = $this->service->getAll(["sensorId" => $sensorId]);
+    
+    return new JsonResponse($measurements);
+  }
+  
+  #[Route(
+    path: "measurements",
     name: "create_measurement",
     methods: ["POST"]
   )]
@@ -40,7 +63,7 @@ class MeasurementController extends AbstractController {
   }
   
   #[Route(
-    path: "/{id}",
+    path: "measurements/{id}",
     name: "update_measurement",
     requirements: ["id" => "[0-7][0-9A-HJKMNP-TV-Z]{25}"],
     methods: ["PUT"]
@@ -52,7 +75,7 @@ class MeasurementController extends AbstractController {
   }
   
   #[Route(
-    path: "/{id}",
+    path: "measurements/{id}",
     name: "delete_measurement",
     requirements: ["id" => "[0-7][0-9A-HJKMNP-TV-Z]{25}"],
     methods: ["DELETE"]

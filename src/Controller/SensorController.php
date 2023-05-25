@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Uid\Ulid;
 
-#[Route(path: "/sensors")]
 class SensorController extends AbstractController {
   
   protected SensorService $service;
@@ -18,18 +17,42 @@ class SensorController extends AbstractController {
   }
   
   #[Route(
-    path: "",
+    path: "sensors",
     name: "get_all_sensor",
     methods: ["GET"]
   )]
   public function getAllSensor(Request $request): JsonResponse {
-    $sensor = $this->service->getAll($this->getDatasFromRequest($request)["params"]);
+    $sensors = $this->service->getAll($this->getDatasFromRequest($request)["params"]);
+    
+    return new JsonResponse($sensors);
+  }
+  
+  #[Route(
+    path: "sensors/{id}",
+    name: "get_sensor_by_id",
+    requirements: ["id" => "[0-7][0-9A-HJKMNP-TV-Z]{25}"],
+    methods: ["GET"]
+  )]
+  public function getMeasurementById(Ulid $id): JsonResponse {
+    $sensor = $this->service->getAll(["id" => $id]);
     
     return new JsonResponse($sensor);
   }
   
   #[Route(
-    path: "",
+    path: "module/{moduleId}/sensors",
+    name: "get_sensor_measurements",
+    requirements: ["moduleId" => "[0-7][0-9A-HJKMNP-TV-Z]{25}"],
+    methods: ["GET"]
+  )]
+  public function getSensorMeasurements(Ulid $moduleId): JsonResponse {
+    $sensors = $this->service->getAll(["moduleId" => $moduleId]);
+    
+    return new JsonResponse($sensors);
+  }
+  
+  #[Route(
+    path: "sensors",
     name: "create_sensor",
     methods: ["POST"]
   )]
@@ -40,7 +63,7 @@ class SensorController extends AbstractController {
   }
   
   #[Route(
-    path: "/{id}",
+    path: "sensors/{id}",
     name: "update_sensor",
     requirements: ["id" => "[0-7][0-9A-HJKMNP-TV-Z]{25}"],
     methods: ["PUT"]
@@ -52,7 +75,7 @@ class SensorController extends AbstractController {
   }
   
   #[Route(
-    path: "/{id}",
+    path: "sensors/{id}",
     name: "delete_sensor",
     requirements: ["id" => "[0-7][0-9A-HJKMNP-TV-Z]{25}"],
     methods: ["DELETE"]
