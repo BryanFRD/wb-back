@@ -20,7 +20,7 @@ class ModuleRepository extends AbstractRepository {
     
     if(isset($params["search"])){
       $queryBuilder->andWhere("e.name LIKE :search");
-      $queryBuilder->setParameter("search", $params["search"]);
+      $queryBuilder->setParameter("search", "%" . $params["search"] . "%");
     }
     
     if(isset($params["status"])){
