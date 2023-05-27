@@ -24,7 +24,8 @@ class MeasurementService extends AbstractRepositoryService {
     $entity = new Measurement();
     $entity
       ->setMeasure($body["measure"])
-      ->setSensor($sensor);
+      ->setSensor($sensor)
+      ->updateTimestamps();
       
     $this->repository->save($entity, $flush);
     
@@ -47,9 +48,7 @@ class MeasurementService extends AbstractRepositoryService {
       }
     }
     
-    if($flush){
-      $this->repository->flush();
-    }
+    $this->repository->flush();
     
     return $entity;
   }

@@ -34,6 +34,10 @@ abstract class AbstractRepositoryService {
     return $this->repository->getById($id);
   }
   
+  public function flush(): void {
+    $this->repository->flush();
+  }
+  
   public abstract function save(array $body, bool $flush = true): ?object;
   
   public abstract function update(Ulid|string $id, array $body, bool $flush = true): ?object;

@@ -20,7 +20,8 @@ class ModuleService extends AbstractRepositoryService {
     $entity = new Module();
     $entity
       ->setName($body["name"])
-      ->setStatus(Status::from($body["status"]));
+      ->setStatus(Status::from($body["status"]))
+      ->updateTimestamps();
       
     $this->repository->save($entity, $flush);
     
@@ -30,7 +31,7 @@ class ModuleService extends AbstractRepositoryService {
   public function update(Ulid|string $id, array $body, bool $flush = true): ?object {
     //TODO Validate body
     
-    $entity = $this->getById($body["id"]);
+    $entity = $this->getById($id);
     if($entity){
       if(isset($body["name"])){
         $entity->setName($body["name"]);
@@ -41,9 +42,7 @@ class ModuleService extends AbstractRepositoryService {
       }
     }
     
-    if($flush){
-      $this->repository->flush();
-    }
+    $this->repository->flush();
     
     return $entity;
   }

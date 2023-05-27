@@ -2,9 +2,7 @@
 
 namespace App\Repository;
 
-use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -14,18 +12,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 abstract class AbstractRepository extends ServiceEntityRepository {
   
   protected $entityName;
-    
+  
   public function __construct(ManagerRegistry $registry){
     $this->entityName = preg_replace(
       ["/^App\\\Repository/", "/Repository$/"],
       ["App\\Entity"],
       get_class($this)
     );
-      
+    
     parent::__construct($registry, $this->entityName);
   }
   
-  #[Assert\Collection]
   public function getAll(array $params): array {
     $queryBuilder = $this->getEntityManager()->createQueryBuilder();
     $queryBuilder
@@ -54,6 +51,10 @@ abstract class AbstractRepository extends ServiceEntityRepository {
     if($flush){
       $this->getEntityManager()->flush();
     }
+  }
+  
+  public function flush(): void {
+    $this->getEntityManager()->flush();
   }
   
   public function remove($entity, bool $flush = false, bool $soft = true): bool {

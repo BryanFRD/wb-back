@@ -34,13 +34,13 @@ class MeasurementController extends AbstractController {
     methods: ["GET"]
   )]
   public function getMeasurementById(Ulid $id): JsonResponse {
-    $measurement = $this->service->getAll(["id" => $id]);
+    $measurement = $this->service->getById($id);
     
     return new JsonResponse($measurement);
   }
   
   #[Route(
-    path: "sensor/{sensorId}/measurements",
+    path: "sensors/{sensorId}/measurements",
     name: "get_sensor_measurements",
     requirements: ["sensorId" => "[0-7][0-9A-HJKMNP-TV-Z]{25}"],
     methods: ["GET"]

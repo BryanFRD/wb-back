@@ -8,4 +8,10 @@ enum Status: string {
   case FAULTY = "faulty";
   case INACTIVE = "inactive";
   
+  public static function randomValue(): string {
+    $arr = array_column(self::cases(), 'value');
+
+    return $arr[array_rand($arr)];
+    }
+  
 }

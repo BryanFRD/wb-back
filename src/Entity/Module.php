@@ -43,4 +43,13 @@ class Module extends AbstractEntity {
     return $this->sensors;
   }
   
+  public function jsonSerialize(): mixed {
+    return array_merge(parent::jsonSerialize(),
+      array(
+        "name" => $this->getName(),
+        "status" => $this->getStatus(),
+      ),
+    );
+  }
+  
 }

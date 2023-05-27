@@ -30,7 +30,8 @@ class SensorService extends AbstractRepositoryService {
       ->setSimulated($body["simulated"])
       ->setSimulationMinimum($body["simulationMinimum"])
       ->setSimulationMaximum($body["simulationMaximum"])
-      ->setModule($module);
+      ->setModule($module)
+      ->updateTimestamps();
       
     $this->repository->save($entity, $flush);
     
@@ -40,7 +41,7 @@ class SensorService extends AbstractRepositoryService {
   public function update(Ulid|string $id, array $body, bool $flush = true): ?object {
     //TODO Validate body
     
-    $entity = $this->getById($body["id"]);
+    $entity = $this->getById($id);
     if($entity){
       if(isset($body["name"])){
         $entity->setName($body["name"]);
@@ -72,9 +73,7 @@ class SensorService extends AbstractRepositoryService {
       }
     }
     
-    if($flush){
-      $this->repository->flush();
-    }
+    $this->repository->flush();
     
     return $entity;
   }

@@ -10,14 +10,14 @@ class ModuleRepository extends AbstractRepository {
   public function getAll(array $params): array {
     $queryBuilder = $this->getEntityManager()->createQueryBuilder();
     $queryBuilder
-      ->select("e.id, e.name, e.status, e.createdAt, e.updatedAt, e.deletedAt, COUNT(s) as sensorCount")
+      ->select("e.id, e.name, e.status, e.createdAt, e.updatedAt, e.deletedAt, COUNT(s) AS sensorCount")
       ->from($this->entityName, "e")
       ->join(Sensor::class, "s")
       ->groupBy("e.id")
       ->where($params["includeDeleted"] ?? false ? "1 = 1" : "e.deletedAt IS NULL")
       ->setFirstResult($params["offset"] ?? 0)
       ->setMaxResults($params["limit"] ?? 50);
-    
+      
     if(isset($params["search"])){
       $queryBuilder->andWhere("e.name LIKE :search");
       $queryBuilder->setParameter("search", "%" . $params["search"] . "%");
@@ -28,12 +28,8 @@ class ModuleRepository extends AbstractRepository {
       $queryBuilder->setParameter("status", $params["status"]);
     }
     
-    if(isset($params["moduleId"])){
-      $queryBuilder->andWhere("e.moduleId = :moduleId");
-      $queryBuilder->setParameter("moduleId", $params["moduleId"]);
-    }
-    
     $paginator = new Paginator($queryBuilder);
+    $paginator->setUseOutputWalkers(false);
     
     return [
       "count" => count($paginator),

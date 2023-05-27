@@ -33,4 +33,12 @@ class Measurement extends AbstractEntity {
     return $this;
   }
   
+  public function jsonSerialize(): mixed {
+    return array_merge(parent::jsonSerialize(),
+      array(
+        "measure" => $this->getMeasure()
+      ),
+    );
+  }
+  
 }

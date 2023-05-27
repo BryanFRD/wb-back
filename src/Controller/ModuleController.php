@@ -34,7 +34,7 @@ class ModuleController extends AbstractController {
     methods: ["GET"]
   )]
   public function getModuleById(Ulid $id): JsonResponse {
-    $module = $this->service->getAll(["id" => $id]);
+    $module = $this->service->getById($id);
     
     return new JsonResponse($module);
   }

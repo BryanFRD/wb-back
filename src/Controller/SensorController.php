@@ -34,18 +34,18 @@ class SensorController extends AbstractController {
     methods: ["GET"]
   )]
   public function getMeasurementById(Ulid $id): JsonResponse {
-    $sensor = $this->service->getAll(["id" => $id]);
+    $sensor = $this->service->getById($id);
     
     return new JsonResponse($sensor);
   }
   
   #[Route(
-    path: "module/{moduleId}/sensors",
-    name: "get_sensor_measurements",
+    path: "modules/{moduleId}/sensors",
+    name: "get_module_sensor",
     requirements: ["moduleId" => "[0-7][0-9A-HJKMNP-TV-Z]{25}"],
     methods: ["GET"]
   )]
-  public function getSensorMeasurements(Ulid $moduleId): JsonResponse {
+  public function getModuleSensors(Ulid $moduleId): JsonResponse {
     $sensors = $this->service->getAll(["moduleId" => $moduleId]);
     
     return new JsonResponse($sensors);
@@ -80,8 +80,9 @@ class SensorController extends AbstractController {
     requirements: ["id" => "[0-7][0-9A-HJKMNP-TV-Z]{25}"],
     methods: ["DELETE"]
   )]
-  public function deleteSensor(Ulid $id): JsonResponse {
-    $this->service->delete($id);
+  public function deleteSensor(Request $request, Ulid $id): JsonResponse {
+    $params = $this->getDatasFromRequest($request)["params"];
+    $this->service->delete($id, true, $params["soft"] ?? true);
     
     return new JsonResponse();
   }
