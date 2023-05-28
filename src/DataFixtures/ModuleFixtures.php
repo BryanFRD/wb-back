@@ -24,10 +24,11 @@ class ModuleFixtures extends Fixture
       
       for($j = 0; $j < 5; $j++){
         $sensor = new Sensor();
+        $type = $faker->randomElement(["Vitesse", "Temperature", "Energie"]);
         $sensor
-          ->setName("Sensor #$j - " . $module->getId())
+          ->setName("Sensor #$j - " . $type)
           ->setStatus($faker->randomElement(Status::cases()))
-          ->setMeasurementType($faker->randomElement(["Vitesse", "Temperature", "Energie"]))
+          ->setMeasurementType($type)
           ->setSimulationMinimum($faker->randomDigit())
           ->setSimulationMaximum($faker->randomNumber(2))
           ->setModule($module)
