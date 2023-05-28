@@ -4,27 +4,27 @@ namespace App\Repository;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
-class ModuleRepository extends AbstractRepository {
+class MeasurementRepository extends AbstractRepository {
   
   public function getAll(array $params): array {
     $queryBuilder = $this->getEntityManager()->createQueryBuilder();
     $queryBuilder
-      ->select("e.id, e.name, e.status, e.createdAt, e.updatedAt, e.deletedAt, COUNT(s) AS sensorCount")
+      ->select("e")
       ->from($this->entityName, "e")
-      ->join("e.sensors", "s")
-      ->groupBy("e.id")
+      ->join("e.sensor", "s")
       ->where($params["includeDeleted"] ?? false ? "1 = 1" : "e.deletedAt IS NULL")
+      ->orderBy("e.createdAt", "DESC")
       ->setFirstResult($params["offset"] ?? 0)
       ->setMaxResults($params["limit"] ?? 50);
-      
-    if(isset($params["search"])){
-      $queryBuilder->andWhere("e.name LIKE :search");
-      $queryBuilder->setParameter("search", "%" . $params["search"] . "%");
+    
+    if(isset($params["dateLimit"])){
+      $queryBuilder->andWhere("e.createdAt < :dateLimit");
+      $queryBuilder->setParameter("dateLimit", $params["dateLimit"]);
     }
     
-    if(isset($params["status"])){
-      $queryBuilder->andWhere("e.status = :status");
-      $queryBuilder->setParameter("status", $params["status"]);
+    if(isset($params["sensorId"])){
+      $queryBuilder->andWhere("s.id = :sensorId");
+      $queryBuilder->setParameter("sensorId", $params["sensorId"]->toBinary());
     }
     
     $paginator = new Paginator($queryBuilder);
