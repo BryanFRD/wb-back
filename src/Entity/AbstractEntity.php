@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use DateTime;
+use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
@@ -32,14 +33,14 @@ abstract class AbstractEntity implements JsonSerializable {
   #[ORM\PreUpdate]
   public function updateTimestamps(): void {
     if(empty($this->createdAt)){
-      $this->createdAt = new DateTime();
+      $this->createdAt = date_create(timezone: new DateTimeZone('EUROPE/Paris'));
     }
     
-    $this->updatedAt = new DateTime();
+    $this->updatedAt = date_create(timezone: new DateTimeZone('EUROPE/Paris'));
   }
   
   public function softDelete(): void {
-    $this->deletedAt = new DateTime();
+    $this->deletedAt = date_create(timezone: new DateTimeZone('EUROPE/Paris'));
   }
   
   public function getId(): ?Ulid {

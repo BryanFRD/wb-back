@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\Sensor;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class MeasurementRepository extends AbstractRepository {
@@ -10,9 +9,9 @@ class MeasurementRepository extends AbstractRepository {
   public function getAll(array $params): array {
     $queryBuilder = $this->getEntityManager()->createQueryBuilder();
     $queryBuilder
-      ->select("e.id, e.measure, e.createdAt, e.updatedAt, e.deletedAt")
+      ->select("e")
       ->from($this->entityName, "e")
-      ->join(Sensor::class, "s")
+      ->join("e.sensor", "s")
       ->where($params["includeDeleted"] ?? false ? "1 = 1" : "e.deletedAt IS NULL")
       ->orderBy("e.createdAt", "DESC")
       ->setFirstResult($params["offset"] ?? 0)
@@ -29,10 +28,9 @@ class MeasurementRepository extends AbstractRepository {
     }
     
     $paginator = new Paginator($queryBuilder);
-    $paginator->setUseOutputWalkers(false);
     
     return [
-      "count" => count($paginator),
+      "count" => $paginator->count(),
       "datas" => $paginator->getQuery()->getResult()
     ];
   }

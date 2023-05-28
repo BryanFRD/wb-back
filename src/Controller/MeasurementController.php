@@ -45,8 +45,8 @@ class MeasurementController extends AbstractController {
     requirements: ["sensorId" => "[0-7][0-9A-HJKMNP-TV-Z]{25}"],
     methods: ["GET"]
   )]
-  public function getSensorMeasurements(Ulid $sensorId): JsonResponse {
-    $measurements = $this->service->getAll(["sensorId" => $sensorId]);
+  public function getSensorMeasurements(Ulid $sensorId, Request $request): JsonResponse {
+    $measurements = $this->service->getAll(array_merge(["sensorId" => $sensorId], $this->getDatasFromRequest($request)["params"]));
     
     return new JsonResponse($measurements);
   }

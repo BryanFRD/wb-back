@@ -2,8 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\Measurement;
-use App\Entity\Module;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class SensorRepository extends AbstractRepository {
@@ -11,10 +9,9 @@ class SensorRepository extends AbstractRepository {
   public function getAll(array $params): array {
     $queryBuilder = $this->getEntityManager()->createQueryBuilder();
     $queryBuilder
-      ->select("e.id, e.name, e.measurementType, e.status, e.simulated, e.simulationMinimum, e.simulationMaximum, e.createdAt, e.updatedAt, e.deletedAt, COUNT(mea) AS measurementCount")
+      ->select("e.id, e.name, e.measurementType, e.status, e.simulated, e.simulationMinimum, e.simulationMaximum, e.createdAt, e.updatedAt, e.deletedAt")
       ->from($this->entityName, "e")
-      ->join(Module::class, 'm')
-      ->join(Measurement::class, 'mea')
+      ->join("e.module", 'm')
       ->groupBy('e.id')
       ->where($params["includeDeleted"] ?? false ? "1 = 1" : "e.deletedAt IS NULL")
       ->setFirstResult($params["offset"] ?? 0)
@@ -41,10 +38,9 @@ class SensorRepository extends AbstractRepository {
     }
     
     $paginator = new Paginator($queryBuilder);
-    $paginator->setUseOutputWalkers(false);
     
     return [
-      "count" => count($paginator),
+      "count" => $paginator->count(),
       "datas" => $paginator->getQuery()->getResult()
     ];
   }

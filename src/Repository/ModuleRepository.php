@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\Sensor;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class ModuleRepository extends AbstractRepository {
@@ -12,7 +11,7 @@ class ModuleRepository extends AbstractRepository {
     $queryBuilder
       ->select("e.id, e.name, e.status, e.createdAt, e.updatedAt, e.deletedAt, COUNT(s) AS sensorCount")
       ->from($this->entityName, "e")
-      ->join(Sensor::class, "s")
+      ->join("e.sensors", "s")
       ->groupBy("e.id")
       ->where($params["includeDeleted"] ?? false ? "1 = 1" : "e.deletedAt IS NULL")
       ->setFirstResult($params["offset"] ?? 0)
@@ -29,10 +28,9 @@ class ModuleRepository extends AbstractRepository {
     }
     
     $paginator = new Paginator($queryBuilder);
-    $paginator->setUseOutputWalkers(false);
     
     return [
-      "count" => count($paginator),
+      "count" => $paginator->count(),
       "datas" => $paginator->getQuery()->getResult()
     ];
   }

@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Enum\Status;
-use App\Repository\ModuleRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -30,10 +29,10 @@ class Sensor extends AbstractEntity {
   #[ORM\Column]
   protected float $simulationMaximum = 100;
   
-  #[ORM\ManyToOne(targetEntity: Module::class, inversedBy: "sensor")]
+  #[ORM\ManyToOne(targetEntity: Module::class, inversedBy: "sensors")]
   protected ?Module $module;
   
-  #[ORM\OneToMany(targetEntity: Measurement::class, mappedBy: "measurement")]
+  #[ORM\OneToMany(targetEntity: Measurement::class, mappedBy: "sensor")]
   protected ?Collection $measurements;
   
   public function getName(): string {

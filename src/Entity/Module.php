@@ -18,7 +18,7 @@ class Module extends AbstractEntity {
   #[ORM\Column(type: "status_enum")]
   protected Status $status = Status::INACTIVE;
   
-  #[ORM\OneToMany(targetEntity: Sensor::class, mappedBy: "sensor")]
+  #[ORM\OneToMany(targetEntity: Sensor::class, mappedBy: "module")]
   protected ?Collection $sensors;
   
   public function getName(): string {

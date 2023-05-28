@@ -45,8 +45,8 @@ class SensorController extends AbstractController {
     requirements: ["moduleId" => "[0-7][0-9A-HJKMNP-TV-Z]{25}"],
     methods: ["GET"]
   )]
-  public function getModuleSensors(Ulid $moduleId): JsonResponse {
-    $sensors = $this->service->getAll(["moduleId" => $moduleId]);
+  public function getModuleSensors(Ulid $moduleId, Request $request): JsonResponse {
+    $sensors = $this->service->getAll(array_merge(["moduleId" => $moduleId], $this->getDatasFromRequest($request)["params"]));
     
     return new JsonResponse($sensors);
   }

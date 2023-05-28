@@ -12,7 +12,7 @@ class Measurement extends AbstractEntity {
   #[ORM\Column]
   protected float $measure;
   
-  #[ORM\ManyToOne(targetEntity: Sensor::class, inversedBy: "measurement")]
+  #[ORM\ManyToOne(targetEntity: Sensor::class, inversedBy: "measurements")]
   protected Sensor $sensor;
   
   public function getMeasure(): float {

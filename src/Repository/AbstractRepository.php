@@ -7,7 +7,6 @@ use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Uid\Ulid;
-use Symfony\Component\Validator\Constraints as Assert;
 
 abstract class AbstractRepository extends ServiceEntityRepository {
   
@@ -36,7 +35,7 @@ abstract class AbstractRepository extends ServiceEntityRepository {
     $paginator = new Paginator($queryBuilder);
     
     return [
-      "count" => count($paginator),
+      "count" => $paginator->count(),
       "datas" => $paginator->getQuery()->getResult()
     ];
   }
