@@ -11,7 +11,7 @@ class SensorRepository extends AbstractRepository {
     $queryBuilder
       ->select("e.id, e.name, e.measurementType, e.status, e.simulated, e.simulationMinimum, e.simulationMaximum, e.createdAt, e.updatedAt, e.deletedAt")
       ->from($this->entityName, "e")
-      ->join("e.module", 'm')
+      ->leftJoin("e.module", 'm')
       ->groupBy('e.id')
       ->where($params["includeDeleted"] ?? false ? "1 = 1" : "e.deletedAt IS NULL")
       ->setFirstResult($params["offset"] ?? 0)

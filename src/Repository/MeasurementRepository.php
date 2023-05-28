@@ -11,7 +11,7 @@ class MeasurementRepository extends AbstractRepository {
     $queryBuilder
       ->select("e")
       ->from($this->entityName, "e")
-      ->join("e.sensor", "s")
+      ->leftJoin("e.sensor", "s")
       ->where($params["includeDeleted"] ?? false ? "1 = 1" : "e.deletedAt IS NULL")
       ->orderBy("e.createdAt", "DESC")
       ->setFirstResult($params["offset"] ?? 0)
