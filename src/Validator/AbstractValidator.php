@@ -12,13 +12,6 @@ abstract class AbstractValidator {
     $this->validator = Validation::createValidator();
   }
   
-  public function validate($data, $constraints): array {
-    $violations = $this->validator->validate($data, $constraints);
-    
-    return [
-      "hasError" => count($violations) === 0,
-      "violations" => $violations
-    ];
-  }
+  public abstract function validate($data): array;
   
 }
