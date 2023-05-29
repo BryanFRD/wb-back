@@ -17,6 +17,11 @@ class SensorRepository extends AbstractRepository {
       ->setFirstResult($params["offset"] ?? 0)
       ->setMaxResults($params["limit"] ?? 50);
     
+    if(isset($params["search"])){
+      $queryBuilder->andWhere("e.name LIKE :search");
+      $queryBuilder->setParameter("search", "%" . $params["search"] . "%");
+    }
+    
     if(isset($params["isSimulated"])){
       $queryBuilder->andWhere("e.simulated = :isSimulated");
       $queryBuilder->setParameter("isSimulated", $params["isSimulated"]);
