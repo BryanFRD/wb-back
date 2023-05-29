@@ -9,9 +9,9 @@ class ModuleRepository extends AbstractRepository {
   public function getAll(array $params): array {
     $queryBuilder = $this->getEntityManager()->createQueryBuilder();
     $queryBuilder
-      ->select("e.id, e.name, e.status, e.createdAt, e.updatedAt, e.deletedAt, COUNT(s) AS sensorCount")
+      ->select("e, e.id, e.name, e.status, e.createdAt, e.updatedAt, e.deletedAt, COUNT(s) AS sensorCount")
       ->from($this->entityName, "e")
-      ->join("e.sensors", "s")
+      ->leftJoin("e.sensors", "s")
       ->groupBy("e.id")
       ->where($params["includeDeleted"] ?? false ? "1 = 1" : "e.deletedAt IS NULL")
       ->setFirstResult($params["offset"] ?? 0)

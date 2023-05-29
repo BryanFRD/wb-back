@@ -20,16 +20,16 @@ class SensorService extends AbstractRepositoryService {
   public function save(array $body, bool $flush = true): ?object {
     //TODO Validate $params
     
-    $module = $this->moduleService->getById($body["moduleId"]);
+    $module = $this->moduleService->getById(!empty($body["moduleId"]) ? $body["moduleId"] : null);
     
     $entity = new Sensor();
     $entity
       ->setName($body["name"])
       ->setStatus(Status::from($body["status"]))
       ->setMeasurementType($body["measurementType"])
-      ->setSimulated($body["simulated"])
-      ->setSimulationMinimum($body["simulationMinimum"])
-      ->setSimulationMaximum($body["simulationMaximum"])
+      ->setSimulated(!empty($body["simulated"]) ? $body["simulated"] : false)
+      ->setSimulationMinimum(!empty($body["simulationMinimum"]) ? $body["simulationMinimum"] : 0)
+      ->setSimulationMaximum(!empty($body["simulationMaximum"]) ? $body["simulationMaximum"] : 100)
       ->setModule($module)
       ->updateTimestamps();
       

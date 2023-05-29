@@ -9,9 +9,10 @@ class MeasurementRepository extends AbstractRepository {
   public function getAll(array $params): array {
     $queryBuilder = $this->getEntityManager()->createQueryBuilder();
     $queryBuilder
-      ->select("e")
+      ->select("e.id, e.measure, e.createdAt, e.updatedAt, e.deletedAt, s.id AS sensorId")
       ->from($this->entityName, "e")
-      ->join("e.sensor", "s")
+      ->leftJoin("e.sensor", "s")
+      ->groupBy("e.id")
       ->where($params["includeDeleted"] ?? false ? "1 = 1" : "e.deletedAt IS NULL")
       ->orderBy("e.createdAt", "DESC")
       ->setFirstResult($params["offset"] ?? 0)
