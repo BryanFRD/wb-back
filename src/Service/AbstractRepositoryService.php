@@ -27,7 +27,7 @@ abstract class AbstractRepositoryService {
       return null;
     }
     
-    if($id instanceof string){
+    if(!($id instanceof Ulid)){
       $id = Ulid::fromString($id);
     }
     

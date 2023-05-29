@@ -9,7 +9,7 @@ class SensorRepository extends AbstractRepository {
   public function getAll(array $params): array {
     $queryBuilder = $this->getEntityManager()->createQueryBuilder();
     $queryBuilder
-      ->select("e.id, e.name, e.measurementType, e.status, e.simulated, e.simulationMinimum, e.simulationMaximum, e.createdAt, e.updatedAt, e.deletedAt")
+      ->select("e.id, e.name, e.measurementType, e.status, e.simulated, e.simulationMinimum, e.simulationMaximum, e.createdAt, e.updatedAt, e.deletedAt, m.id AS moduleId")
       ->from($this->entityName, "e")
       ->leftJoin("e.module", 'm')
       ->groupBy('e.id')
